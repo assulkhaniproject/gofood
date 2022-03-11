@@ -18,6 +18,7 @@ class CreateMerchantsTable extends Migration
             $table->string('name');
             $table->text('address');
             $table->string('phone');
+            $table->text('photo');
             $table->timestamps();
         });
     }

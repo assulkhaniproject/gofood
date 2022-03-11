@@ -2,11 +2,14 @@
 
 namespace App\Filament\Widgets;
 
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\BarChartWidget;
 use Filament\Widgets\Widget;
 
 class PedagangChart extends BarChartWidget
 {
+    use HasWidgetShield;
+    
     protected function getHeading(): string
     {
         return 'Blog posts';

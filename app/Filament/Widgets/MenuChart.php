@@ -2,11 +2,13 @@
 
 namespace App\Filament\Widgets;
 
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\LineChartWidget;
 use Filament\Widgets\Widget;
 
 class MenuChart extends LineChartWidget
 {
+    use HasWidgetShield;
     // protected static string $view = 'filament.widgets.menu-chart';
     protected function getHeading(): string
     {
