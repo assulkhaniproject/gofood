@@ -7,14 +7,18 @@ use App\Filament\Resources\MenuResource\RelationManagers;
 use App\Filament\Resources\MerchantResource\RelationManagers\MenusRelationManager;
 use App\Models\Menu;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 
-class MenuResource extends Resource
+class MenuResource extends Resource 
 {
     protected static ?string $model = Menu::class;
 
@@ -28,11 +32,11 @@ class MenuResource extends Resource
     {
         return $form
             ->schema([
+                Card::make()->schema([
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\BelongsToSelect::make('category_id')
                     ->relationship('category', 'name')
-                    ->required()
-                    ->searchable(),
+                    ->required(),
                 Forms\Components\BelongsToSelect::make('merchant_id')
                     ->relationship('merchant', 'name')
                     ->required(),
@@ -41,15 +45,24 @@ class MenuResource extends Resource
                     ->numeric()
                     ->mask(fn (TextInput\Mask $mask) => $mask->numeric()->integer()->thousandsSeparator()),
                 Forms\Components\Textarea::make('description'),
-            ]);
+                ])->columnSpan(2),
+                Card::make()->schema([
+                    FileUpload::make('photo')->disk('public')->directory('/menu/photo')
+                ])->columnSpan(1)
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('price')->money('IDR', true),
+                ImageColumn::make('photo')->width(50)->height(50)->rounded(),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('price')->money('IDR', true)->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('j M, Y')->sortable(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime('j M, Y')->sortable(),
             ])
             ->filters([
                 //

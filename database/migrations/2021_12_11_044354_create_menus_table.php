@@ -22,7 +22,9 @@ class CreateMenusTable extends Migration
             $table->text('description')->nullable();
             $table->unsignedInteger('merchant_id');
             $table->foreign('merchant_id')->references('id')->on('merchants');
+            $table->text('photo')->nullable();
             $table->timestamps();
+
         });
     }
 
